@@ -545,7 +545,7 @@ stmt: insert_stmt { emit("STMT"); }
 insert_stmt: INSERT insert_opts opt_into NAME
      opt_col_names
      VALUES insert_vals_list
-     opt_ondupupdate { emit("INSERTVALS %d %d %s", $2, $7, $4); free($4) }
+     opt_ondupupdate { emit("INSERTVALS %d %d %s", $2, $7, $4); free($4); }
    ;
 
 opt_ondupupdate: /* nil */
@@ -579,7 +579,7 @@ insert_vals:
 insert_stmt: INSERT insert_opts opt_into NAME
     SET insert_asgn_list
     opt_ondupupdate
-     { emit("INSERTASGN %d %d %s", $2, $6, $4); free($4) }
+     { emit("INSERTASGN %d %d %s", $2, $6, $4); free($4); }
    ;
 
 insert_stmt: INSERT insert_opts opt_into NAME opt_col_names
@@ -609,13 +609,13 @@ stmt: replace_stmt { emit("STMT"); }
 replace_stmt: REPLACE insert_opts opt_into NAME
      opt_col_names
      VALUES insert_vals_list
-     opt_ondupupdate { emit("REPLACEVALS %d %d %s", $2, $7, $4); free($4) }
+     opt_ondupupdate { emit("REPLACEVALS %d %d %s", $2, $7, $4); free($4); }
    ;
 
 replace_stmt: REPLACE insert_opts opt_into NAME
     SET insert_asgn_list
     opt_ondupupdate
-     { emit("REPLACEASGN %d %d %s", $2, $6, $4); free($4) }
+     { emit("REPLACEASGN %d %d %s", $2, $6, $4); free($4); }
    ;
 
 replace_stmt: REPLACE insert_opts opt_into NAME opt_col_names
@@ -789,7 +789,8 @@ enum_list: STRING { emit("ENUMVAL %s", $1); free($1); $$ = 1; }
    | enum_list ',' STRING { emit("ENUMVAL %s", $3); free($3); $$ = $1 + 1; }
    ;
 
-create_select_statement: opt_ignore_replace opt_as select_stmt { emit("CREATESELECT %d", $1) }
+create_select_statement: opt_ignore_replace opt_as select_stmt {
+					   emit("CREATESELECT %d", $1); }
    ;
 
 opt_ignore_replace: /* nil */ { $$ = 0; }
@@ -863,9 +864,9 @@ expr: expr BETWEEN expr AND expr %prec BETWEEN { emit("BETWEEN"); }
 
 val_list: expr { $$ = 1; }
    | expr ',' val_list { $$ = 1 + $3; }
-   ;
+   
 
-opt_val_list: /* nil */ { $$ = 0 }
+opt_val_list: /* nil */ { $$ = 0; }
    | val_list
    ;
 
@@ -880,7 +881,7 @@ expr: NAME '(' opt_val_list ')' {  emit("CALL %d %s", $3, $1); free($1); }
    ;
 
   /* functions with special syntax */
-expr: FCOUNT '(' '*' ')' { emit("COUNTALL") }
+expr: FCOUNT '(' '*' ')' { emit("COUNTALL"); }
    | FCOUNT '(' expr ')' { emit(" CALL 1 COUNT"); } 
 
 expr: FSUBSTRING '(' val_list ')' {  emit("CALL %d SUBSTR", $3);}
@@ -928,9 +929,9 @@ expr: expr REGEXP expr { emit("REGEXP"); }
    | expr NOT REGEXP expr { emit("REGEXP"); emit("NOT"); }
    ;
 
-expr: CURRENT_TIMESTAMP { emit("NOW") };
-   | CURRENT_DATE	{ emit("NOW") };
-   | CURRENT_TIME	{ emit("NOW") };
+expr: CURRENT_TIMESTAMP { emit("NOW"); }
+   | CURRENT_DATE	{ emit("NOW"); }
+   | CURRENT_TIME	{ emit("NOW"); }
    ;
 
 expr: BINARY expr %prec UMINUS { emit("STRTOBIN"); }
