@@ -20,7 +20,7 @@ int lines = 0;
 
 %%
 
-main()
+int main()
 {
   yylex();
   printf("%8d%8d%8d\n", lines, words, chars);

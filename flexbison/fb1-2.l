@@ -15,7 +15,7 @@
 "liberal" { printf("conservative"); }
 . { printf("%s", yytext); }
 %%
-main()
+int main()
 {
   yylex();
 }

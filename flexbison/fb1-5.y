@@ -40,7 +40,7 @@ term: NUMBER
  | OP exp CP { $$ = $2; }
  ;
 %%
-main()
+int main()
 {
   printf("> "); 
   yyparse();

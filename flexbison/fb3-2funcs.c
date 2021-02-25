@@ -432,7 +432,7 @@ yyerror(char *s, ...)
 }
 
 int
-main()
+int main()
 {
   printf("> "); 
   return yyparse();

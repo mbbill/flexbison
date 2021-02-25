@@ -33,7 +33,7 @@
 [ \t]   { /* ignore white space */ }
 .	{ printf("Mystery character %c\n", *yytext); }
 %%
-main()
+int main()
 {
   int tok;
 

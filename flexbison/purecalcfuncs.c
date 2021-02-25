@@ -430,7 +430,7 @@ yyerror(struct pcdata *pp, char *s, ...)
 }
 
 int
-main()
+int main()
 {
   struct pcdata p = { NULL, 0, NULL };
 

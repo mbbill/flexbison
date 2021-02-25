@@ -73,7 +73,7 @@ term: NUMBER
  | OP exp CP { $$ = $2; }
  ;
 %%
-main()
+int main()
 {
   cppcalc_ctx ctx(8);      // work in octal today
 
