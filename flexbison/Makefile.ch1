@@ -26,9 +26,9 @@ fb1-4:	fb1-4.l
 	cc -o $@ lex.yy.c -ll
 
 fb1-5:  fb1-5.l fb1-5.y
-    bison -b fb1-5 -d fb1-5.y
-    flex fb1-5.l
-    gcc -o fb1-5 fb1-5.tab.c lex.yy.c -ll
+	bison -b fb1-5 -d fb1-5.y
+	flex fb1-5.l
+	gcc -o fb1-5 fb1-5.tab.c lex.yy.c -ll
 
 clean:
 	rm -f fb1-1 fb1-2 fb1-3 fb1-4 fb1-5 \

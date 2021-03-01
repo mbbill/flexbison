@@ -25,6 +25,8 @@ main(argc, argv)
 int argc;
 char **argv;
 {
+  // 这个地方的逻辑是: yyin 是定义的输入流
+  // 这里定义了 yyin
   if(argc > 1) {
     if(!(yyin = fopen(argv[1], "r"))) {
       perror(argv[1]);
@@ -33,7 +35,7 @@ char **argv;
   }
 
   yylex();
-  printf("%8d%8d%8d\n", lines, words, chars);
+  printf("lines: %8d; words: %8d; chars: %8d\n", lines, words, chars);
 }
 
 yywrap() { return 1; }

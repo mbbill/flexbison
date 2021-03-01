@@ -25,6 +25,7 @@
 
   /* simple symtab of fixed size */
   #define NHASH 9997
+  // It's a fucking global variable...
   struct symbol symtab[NHASH];
 
   struct symbol *lookup(char*);
@@ -74,23 +75,28 @@ symhash(char *sym)
 int nnew, nold;
 int nprobe;
 
+// lookup 可以找到供读取/插入的地址
 struct symbol *
 lookup(char* sym)
 {
+  // 限定为到一个 sp
   struct symbol *sp = &symtab[symhash(sym)%NHASH];
   int scount = NHASH;		/* how many have we looked at */
 
+  // nprobe 应该是程序到目前为止 probe 的次数
   while(--scount >= 0) {
     nprobe++;
+    // 找到名称相同的就直接返回了
     if(sp->name && !strcmp(sp->name, sym)) { nold++; return sp; }
 
+    // 否则设置好 sp 然后返回
     if(!sp->name) {		/* new entry */
       nnew++;
       sp->name = strdup(sym);
       sp->reflist = 0;
       return sp;
     }
-
+    // 永劫回归！
     if(++sp >= symtab+NHASH) sp = symtab; /* try the next entry */
   }
   fputs("symbol table overflow\n", stderr);
@@ -124,6 +130,7 @@ addref(int lineno, char *filename, char *word, int flags)
  */
 
 /* aux function for sorting */
+/* 实际上就相当于符号的名称比较 */
 static int
 symcompare(const void *xa, const void *xb)
 {

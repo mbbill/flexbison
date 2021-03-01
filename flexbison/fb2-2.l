@@ -44,6 +44,7 @@ main(int argc, char **argv)
       perror(argv[1]);
       return (1);
     }
+    // 多个文件的时候，restart
     yyrestart(f);
     yylex();
     fclose(f);

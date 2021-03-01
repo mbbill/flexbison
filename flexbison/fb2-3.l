@@ -9,19 +9,20 @@
 
 %option noyywrap warn nodefault
 %x IFILE
+%{
   struct bufstack {
     struct bufstack *prev;	/* previous entry */
     YY_BUFFER_STATE bs;		/* saved buffer */
     int lineno;			/* saved line number */
     char *filename;		/* name of this file */
     FILE *f;			/* current file */
-  } *curbs = 0;
+  } *curbs = NULL;
 
   char *curfilename;		/* name of current input file */
 
   int newfile(char *fn);
   int popfile(void);
-
+%}
 %%
 ^"#"[ \t]*include[ \t]*[\"<] { BEGIN IFILE; }
 
@@ -45,7 +46,7 @@
 <<EOF>>                    { if(!popfile()) yyterminate(); }
 %%
 
-main(int argc, char **argv)
+int main(int argc, char **argv)
 {
   if(argc < 2) {
     fprintf(stderr, "need filename\n");
@@ -55,10 +56,13 @@ main(int argc, char **argv)
     yylex();
 }
 
-int
-  newfile(char *fn)
+// return 1 的时候表示成功
+// return 0 的时候表示失败
+int newfile(char *fn)
 {
+  // 打开文件
   FILE *f = fopen(fn, "r");
+  // 创建一个目前的 bufstack
   struct bufstack *bs = malloc(sizeof(struct bufstack));
 
   /* die if no file or no room */
@@ -80,8 +84,7 @@ int
   return 1;
 }
 
-int
-  popfile(void)
+int popfile(void)
 {
   struct bufstack *bs = curbs;
   struct bufstack *prevbs;
