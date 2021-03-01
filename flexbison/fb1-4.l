@@ -39,7 +39,7 @@ int main()
 
   while(tok = yylex()) {
     printf("%d", tok);
-    if(tok == NUMBER) printf(" = %d\n", yylval);
+    if(tok == NUMBER) printf("(NUMBER) = %d\n", yylval);
     else printf("\n");
   }
 }

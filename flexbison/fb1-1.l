@@ -12,8 +12,8 @@ int words = 0;
 int lines = 0;
 %}
 
+/* 这个应该只有 flex 就行，就是简单处理了一下 lex, 然后对 token 做了下处理 */
 %%
-
 [a-zA-Z]+	{ words++; chars += strlen(yytext); }
 \n		{ chars++; lines++; }
 .		{ chars++; }

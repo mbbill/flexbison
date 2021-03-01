@@ -9,6 +9,8 @@
 
 %{
 # include "fb1-5.tab.h"
+
+extern int yylval = 0;
 %}
 
 %%
@@ -24,5 +26,5 @@
 \n      { return EOL; }
 "//".*  
 [ \t]   { /* ignore white space */ }
-.	{ yyerror("Mystery character %c\n", *yytext); }
+.	{ fprintf(stderr, "Mystery character %c\n", *yytext); }
 %%
