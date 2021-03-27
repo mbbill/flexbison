@@ -24,6 +24,15 @@ const int strtol_base = 16;
 "("     { return OP; }
 ")"     { return CP; }
 [0-9]+	{ yylval = atoi(yytext); return NUMBER; }
+0x[0-9a-fA-F]+ { 
+    char* p_end;
+    yylval = strtol(yytext, &p_end, strtol_base); 
+    if (errno != 0) {
+        yyerror("number parsing error");
+        exit(0);
+    }
+    return NUMBER; 
+}
 
 \n      { return EOL; }
 "//".*  

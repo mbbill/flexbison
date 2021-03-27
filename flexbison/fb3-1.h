@@ -14,6 +14,7 @@ void yyerror(char *s, ...);
 
 /* nodes in the Abstract Syntax Tree */
 struct ast {
+  // 你们写 C 的都不定义好 nodetype 吗...?
   int nodetype;
   struct ast *l;
   struct ast *r;
